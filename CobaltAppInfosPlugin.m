@@ -41,7 +41,15 @@
     NSString * version = [infos objectForKey:@"CFBundleShortVersionString"];
     NSString * build = [infos objectForKey:@"CFBundleVersion"];
     
-    return @{@"versionName": version, @"versionCode": build};
+    NSLocale *currentLocale = [NSLocale currentLocale];
+    NSString *languageCode = [currentLocale objectForKey:NSLocaleLanguageCode];
+    NSString *countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
+    NSMutableString *lang = [NSMutableString stringWithString:languageCode];
+    if (countryCode != nil && countryCode.length != 0) [lang appendFormat:@"-%@", countryCode];
+    
+    return @{@"versionName": version,
+             @"versionCode": build,
+             @"lang": lang};
 }
 
 @end
