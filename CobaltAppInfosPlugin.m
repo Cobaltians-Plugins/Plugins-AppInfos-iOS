@@ -47,9 +47,12 @@
     NSMutableString *lang = [NSMutableString stringWithString:languageCode];
     if (countryCode != nil && countryCode.length != 0) [lang appendFormat:@"-%@", countryCode];
     
+    NSString *deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    
     return @{@"versionName": version,
              @"versionCode": build,
-             @"lang": lang};
+             @"lang": lang,
+             @"deviceId": deviceId};
 }
 
 @end
