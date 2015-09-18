@@ -52,6 +52,7 @@
     return @{@"versionName": version,
              @"versionCode": build,
              @"lang": lang,
+             @"platform": @"ios",
              @"deviceId": deviceId};
 }
 
