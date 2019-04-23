@@ -9,6 +9,7 @@
 #import "CobaltAppInfosPlugin.h"
 
 #import <Cobalt/Cobalt.h>
+#import <Cobalt/PubSub.h>
 
 @implementation CobaltAppInfosPlugin
 
@@ -22,8 +23,8 @@
         && callbackChannel != nil)
     {
         NSDictionary *appInfos = [CobaltAppInfosPlugin getAppInfos];
-        [Cobalt publishMessage:appInfos
-                     toChannel:callbackChannel];
+        [[PubSub sharedInstance] publishMessage:appInfos
+                                      toChannel:JSEventOnAppStarted];
     }
 }
 
