@@ -24,7 +24,7 @@
     {
         NSDictionary *appInfos = [CobaltAppInfosPlugin getAppInfos];
         [[PubSub sharedInstance] publishMessage:appInfos
-                                      toChannel:JSEventOnAppStarted];
+                                      toChannel:callbackChannel];
     }
 }
 
