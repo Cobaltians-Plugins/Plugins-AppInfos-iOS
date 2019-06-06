@@ -8,28 +8,23 @@
 
 #import "CobaltAppInfosPlugin.h"
 
+#import <Cobalt/Cobalt.h>
+#import <Cobalt/PubSub.h>
+
 @implementation CobaltAppInfosPlugin
 
-- (void) onMessageFromCobaltController: (CobaltViewController *)viewController
-                               andData: (NSDictionary *)data {
-    [self onMessageWithCobaltController:viewController andData:data];
-}
-
-- (void) onMessageFromWebLayerWithCobaltController: (CobaltViewController *)viewController
-                                           andData: (NSDictionary *)data {
-    [self onMessageWithCobaltController:viewController andData:data];
-}
-
-- (void) onMessageWithCobaltController: (CobaltViewController *)viewController
-                               andData: (NSDictionary *)data {
-    NSString * callback = [data objectForKey:kJSCallback];
-    NSString * action = [data objectForKey:kJSAction];
-    
-    if (action != nil && [action isEqualToString:@"getAppInfos"]) {
-        NSDictionary * appInfos = [CobaltAppInfosPlugin getAppInfos];
-        
-        [viewController sendCallback: callback
-                            withData: appInfos];
+- (void)onMessageFromWebView:(WebViewType)webView
+          inCobaltController:(nonnull CobaltViewController *)viewController
+                  withAction:(nonnull NSString *)action
+                        data:(nullable NSDictionary *)data
+          andCallbackChannel:(nullable NSString *)callbackChannel
+{
+    if ([action isEqualToString:@"getAppInfos"]
+        && callbackChannel != nil)
+    {
+        NSDictionary *appInfos = [CobaltAppInfosPlugin getAppInfos];
+        [[PubSub sharedInstance] publishMessage:appInfos
+                                      toChannel:callbackChannel];
     }
 }
 
